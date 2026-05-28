@@ -2,31 +2,17 @@ package nl.multicode.elevenproof.service;
 
 import lombok.RequiredArgsConstructor;
 import nl.multicode.elevenproof.map.StringToIntArray;
-import nl.multicode.elevenproof.validate.GiroAccountNumberElevenProof;
+import nl.multicode.elevenproof.validate.GiroAccountNumberValidator;
 
 /**
- * Service facade for Dutch Giro/Postbank account numbers. Generation is deliberately not
- * supported because every 1-to-7 digit value is a valid Giro format and there is no meaningful
- * way to "generate" one.
+ * Service facade for Dutch Giro/Postbank account numbers. Only validation is supported —
+ * generation is meaningless because every 1-to-7 digit value is a valid Giro format.
  */
 @RequiredArgsConstructor
-public class GiroAccountNumberService implements ElevenProofService<Void> {
+public class GiroAccountNumberService implements ValidateOnlyService {
 
-    private final GiroAccountNumberElevenProof elevenProof;
+    private final GiroAccountNumberValidator validator;
     private final StringToIntArray stringToIntArray;
-
-    /**
-     * Generation is not supported for Giro account numbers.
-     *
-     * @return never returns normally
-     * @throws UnsupportedOperationException always
-     */
-    @Override
-    public Void generate() {
-        throw new UnsupportedOperationException(
-            "Giro account numbers cannot be generated as any 1-7 digit number is technically valid."
-        );
-    }
 
     /**
      * Validates the supplied Giro account number string against the Giro length rule.
@@ -36,7 +22,7 @@ public class GiroAccountNumberService implements ElevenProofService<Void> {
      */
     @Override
     public boolean isValid(String number) {
-        final var digits = stringToIntArray.apply(number);
-        return elevenProof.test(digits);
+
+        return validator.test(stringToIntArray.apply(number));
     }
 }

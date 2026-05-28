@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import nl.multicode.elevenproof.generate.supplier.ObjectSupplier;
+import java.util.function.Supplier;
 import nl.multicode.elevenproof.map.IntArrayToString;
 import nl.multicode.elevenproof.validate.ElevenProof;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class CitizenServiceNumberGeneratorTest {
 
     @Mock
-    private ObjectSupplier<int[]> randomDigitsSupplier;
+    private Supplier<int[]> randomDigitsSupplier;
 
     @Mock
     private IntArrayToString intArrayToString;
@@ -36,14 +36,14 @@ class CitizenServiceNumberGeneratorTest {
     void generate() {
 
         final var bsn = new int[]{1, 2, 3};
-        when(randomDigitsSupplier.supply()).thenReturn(bsn);
+        when(randomDigitsSupplier.get()).thenReturn(bsn);
         when(numberElevenProof.test(bsn)).thenReturn(Boolean.TRUE);
         when(intArrayToString.apply(bsn)).thenReturn("123");
 
         final var generatedResult = generator.generate();
 
         assertThat(generatedResult).isEqualTo("123");
-        verify(randomDigitsSupplier).supply();
+        verify(randomDigitsSupplier).get();
         verify(numberElevenProof).test(bsn);
         verify(intArrayToString).apply(bsn);
     }

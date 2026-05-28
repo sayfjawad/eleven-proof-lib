@@ -6,7 +6,7 @@
 
   <groupId>nl.multicode.elevenproof</groupId>
   <artifactId>eleven-proof-lib</artifactId>
-  <version>1.0</version>
+  <version>1.1</version>
   <name>eleven-proof-lib :: parent</name>
   <description>
     Aggregator parent POM for the eleven-proof library. Coordinates four modules - core (API
@@ -178,7 +178,6 @@
     <gson.version>2.12.1</gson.version>
     <modelmapper.version>3.2.2</modelmapper.version>
     <restassured.version>5.5.1</restassured.version>
-    <lombok.version>1.18.46</lombok.version>
     <jib-maven-plugin.version>3.4.4</jib-maven-plugin.version>
   </properties>
 

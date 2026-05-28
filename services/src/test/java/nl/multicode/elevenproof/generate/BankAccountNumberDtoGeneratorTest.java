@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import nl.multicode.elevenproof.generate.supplier.ObjectSupplier;
+import java.util.function.Supplier;
 import nl.multicode.elevenproof.map.IntArrayToString;
 import nl.multicode.elevenproof.validate.ElevenProof;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class BankAccountNumberGeneratorTest {
 
     @Mock
-    private ObjectSupplier<int[]> randomDigitsSupplier;
+    private Supplier<int[]> randomDigitsSupplier;
 
     @Mock
     private IntArrayToString intArrayToString;
@@ -34,7 +34,7 @@ class BankAccountNumberGeneratorTest {
     public void testGenerate() {
 
         final var validBankNumber = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
-        when(randomDigitsSupplier.supply()).thenReturn(validBankNumber);
+        when(randomDigitsSupplier.get()).thenReturn(validBankNumber);
         when(numberElevenProof.test(any())).thenReturn(true);
         when(intArrayToString.apply(any())).thenReturn("1234567890");
 

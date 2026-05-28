@@ -7,7 +7,7 @@ package nl.multicode.elevenproof.controller;
  * @param <T> the controller-specific result type produced by {@link #generate()} and
  *            {@link #validate(String)}
  */
-public interface ElevenproofController<T> {
+public interface ElevenproofController<T> extends ValidateOnlyController<T> {
 
     /**
      * Generates a new valid eleven-proof number.
@@ -15,12 +15,4 @@ public interface ElevenproofController<T> {
      * @return the generated result
      */
     T generate();
-
-    /**
-     * Validates the supplied number against the eleven-proof rule.
-     *
-     * @param number the number to validate
-     * @return a result describing whether the number is valid
-     */
-    T validate(String number);
 }

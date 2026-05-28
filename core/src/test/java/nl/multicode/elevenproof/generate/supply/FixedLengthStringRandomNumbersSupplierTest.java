@@ -19,7 +19,7 @@ class FixedLengthStringRandomNumbersSupplierTest {
             + "Then a random number string is generated with the required length")
     void supply_will_supply(int expectedNrOfDigits) {
 
-        final var result = new FixedLengthStringRandomNumbersSupplier(expectedNrOfDigits).supply();
+        final var result = new FixedLengthStringRandomNumbersSupplier(expectedNrOfDigits).get();
         assertThat(result).hasSize(expectedNrOfDigits);
     }
 
