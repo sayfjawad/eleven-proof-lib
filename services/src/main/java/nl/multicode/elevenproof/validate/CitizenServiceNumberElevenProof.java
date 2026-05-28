@@ -14,7 +14,6 @@ package nl.multicode.elevenproof.validate;
  *   <li>Multipliers are {9, 8, 7, 6, 5, 4, 3, 2, -1}.</li>
  *   <li>The sum of the digits multiplied by their respective weights must be divisible by 11.</li>
  * </ul>
- * </p>
  */
 public class CitizenServiceNumberElevenProof implements ElevenProof {
 

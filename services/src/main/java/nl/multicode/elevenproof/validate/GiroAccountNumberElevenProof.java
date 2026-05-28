@@ -13,7 +13,6 @@ package nl.multicode.elevenproof.validate;
  *   <li>No Eleven Proof (modulo-11) is applied. All numbers within this length are considered valid
  *   formats for a Giro number.</li>
  * </ul>
- * </p>
  */
 public class GiroAccountNumberElevenProof implements ElevenProof {
 
