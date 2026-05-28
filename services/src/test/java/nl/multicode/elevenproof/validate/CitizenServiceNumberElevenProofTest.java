@@ -5,14 +5,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class BurgerServiceNumberProofTest {
+class CitizenServiceNumberElevenProofTest {
 
-    BurgerServiceNumberProof elevenProof;
+    CitizenServiceNumberElevenProof elevenProof;
 
     @BeforeEach
     public void setup() {
 
-        elevenProof = new BurgerServiceNumberProof();
+        elevenProof = new CitizenServiceNumberElevenProof();
     }
 
     @Test

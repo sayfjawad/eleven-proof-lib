@@ -1,33 +1,24 @@
 package nl.multicode.elevenproof.config;
 
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.servers.Server;
+
+import nl.multicode.elevenproof.controller.BankAccountNumberController;
+import nl.multicode.elevenproof.controller.CitizenServiceNumberController;
+import nl.multicode.elevenproof.controller.GiroAccountNumberController;
 import nl.multicode.elevenproof.generate.BankAccountNumberGenerator;
-import nl.multicode.elevenproof.generate.BurgerServiceNummerGenerator;
+import nl.multicode.elevenproof.generate.CitizenServiceNumberGenerator;
 import nl.multicode.elevenproof.generate.supplier.FixedLengthStringRandomNumbersSupplier;
 import nl.multicode.elevenproof.map.IntArrayToString;
 import nl.multicode.elevenproof.map.StringToIntArray;
 import nl.multicode.elevenproof.service.BankAccountNumberService;
-import nl.multicode.elevenproof.service.BurgerServiceNumberService;
+import nl.multicode.elevenproof.service.CitizenServiceNumberService;
+import nl.multicode.elevenproof.service.GiroAccountNumberService;
 import nl.multicode.elevenproof.validate.BankAccountNumberElevenProof;
-import nl.multicode.elevenproof.validate.BurgerServiceNumberProof;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import nl.multicode.elevenproof.validate.CitizenServiceNumberElevenProof;
+import nl.multicode.elevenproof.validate.GiroAccountNumberElevenProof;
 
-@Configuration
+
 public class AppConfig {
 
-    @Bean
-    public OpenAPI customOpenAPI() {
-
-        final var openapi = new OpenAPI();
-        openapi.addServersItem(new Server().url("https://elevenproof.multicode.nl"));
-        openapi.addServersItem(new Server().url("http://elevenproof.multicode.nl"));
-        openapi.addServersItem(new Server().url("http://localhost:8080"));
-        return openapi;
-    }
-
-    @Bean
     public BankAccountNumberGenerator getBankAccountNumberGenerator(
             IntArrayToString intArrayToString,
             BankAccountNumberElevenProof bankAccountNumberElevenProof) {
@@ -39,57 +30,92 @@ public class AppConfig {
                 bankAccountNumberElevenProof);
     }
 
-    @Bean
-    public BurgerServiceNummerGenerator getBurgerServiceNummerGenerator(
+    public CitizenServiceNumberGenerator getCitizenServiceNumberGenerator(
             IntArrayToString intArrayToString,
-            BurgerServiceNumberProof burgerServiceNumberProof) {
+            CitizenServiceNumberElevenProof citizenServiceNumberElevenProof) {
 
-        return new BurgerServiceNummerGenerator(
+        return new CitizenServiceNumberGenerator(
                 new FixedLengthStringRandomNumbersSupplier(
-                        BurgerServiceNummerGenerator.BSN_DIGITS_LENGTH),
+                        CitizenServiceNumberGenerator.BSN_DIGITS_LENGTH),
                 intArrayToString,
-                burgerServiceNumberProof);
+                citizenServiceNumberElevenProof);
     }
 
-    @Bean
-    public BurgerServiceNumberProof getBsnElevenProof() {
+    public CitizenServiceNumberElevenProof getCitizenServiceNumberElevenProof() {
 
-        return new BurgerServiceNumberProof();
+        return new CitizenServiceNumberElevenProof();
     }
 
-    @Bean
     public BankAccountNumberElevenProof getBankAccountNumberElevenProof() {
 
         return new BankAccountNumberElevenProof();
     }
 
-    @Bean
+    public GiroAccountNumberElevenProof getGiroAccountNumberElevenProof() {
+
+        return new GiroAccountNumberElevenProof();
+    }
+
     public IntArrayToString getIntArrayToString() {
 
         return new IntArrayToString();
     }
 
-    @Bean
     public StringToIntArray getStringToIntArray() {
 
         return new StringToIntArray();
     }
 
-    @Bean
-    public BurgerServiceNumberService getBurgerServiceNumberService(
-            BurgerServiceNummerGenerator generator,
-            BurgerServiceNumberProof elevenProof,
+    public CitizenServiceNumberService getCitizenServiceNumberService(
+            CitizenServiceNumberGenerator generator,
+            CitizenServiceNumberElevenProof elevenProof,
             StringToIntArray stringToIntArray) {
 
-        return new BurgerServiceNumberService(generator, elevenProof, stringToIntArray);
+        return new CitizenServiceNumberService(generator, elevenProof, stringToIntArray);
     }
 
-    @Bean
     public BankAccountNumberService getBankAccountNumberService(
             BankAccountNumberGenerator generator,
             BankAccountNumberElevenProof elevenProof,
             StringToIntArray stringToIntArray) {
 
         return new BankAccountNumberService(generator, elevenProof, stringToIntArray);
+    }
+
+    public GiroAccountNumberService getGiroAccountNumberService(
+            GiroAccountNumberElevenProof elevenProof,
+            StringToIntArray stringToIntArray) {
+
+        return new GiroAccountNumberService(elevenProof, stringToIntArray);
+    }
+
+    public BankAccountNumberController getBankAccountNumberController() {
+
+        final var intArrayToString = getIntArrayToString();
+        final var stringToIntArray = getStringToIntArray();
+        final var generator = getBankAccountNumberGenerator(intArrayToString,
+                getBankAccountNumberElevenProof());
+        final var service = getBankAccountNumberService(generator,
+                getBankAccountNumberElevenProof(), stringToIntArray);
+        return new BankAccountNumberController(service);
+    }
+
+    public CitizenServiceNumberController getCitizenServiceNumberController() {
+
+        final var intArrayToString = getIntArrayToString();
+        final var stringToIntArray = getStringToIntArray();
+        final var generator = getCitizenServiceNumberGenerator(intArrayToString,
+                getCitizenServiceNumberElevenProof());
+        final var service = getCitizenServiceNumberService(generator, getCitizenServiceNumberElevenProof(),
+                stringToIntArray);
+        return new CitizenServiceNumberController(service);
+    }
+
+    public GiroAccountNumberController getGiroAccountNumberController() {
+
+        final var stringToIntArray = getStringToIntArray();
+        final var service = getGiroAccountNumberService(getGiroAccountNumberElevenProof(),
+                stringToIntArray);
+        return new GiroAccountNumberController(service);
     }
 }

@@ -7,7 +7,7 @@ import nl.multicode.elevenproof.map.IntArrayToString;
 import nl.multicode.elevenproof.validate.ElevenProof;
 
 @RequiredArgsConstructor
-public class BurgerServiceNummerGenerator implements Generator {
+public class CitizenServiceNumberGenerator implements Generator {
 
     public static final int BSN_DIGITS_LENGTH = 9;
 

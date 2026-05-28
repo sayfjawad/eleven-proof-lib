@@ -1,12 +1,12 @@
-# elevenproof-api
+# eleven-proof-lib
 
 Opensource Java API for validating and generating numbers that use the ElevenProof (elfproef in
-Dutch) (BSN Burger Service Nummer, Bank Account number, etc...)
+Dutch) (BSN Social Security Number / Citizen Service Number, Bank Account number, etc...)
 
 ## How the eleven proof works
 
 This example uses the Dutch implementation of the eleven proof for the social security number
-equivalent 'BSN - Burger Service Nummer'.
+equivalent 'BSN - Social Security Number / Citizen Service Number'.
 
 | BSN number | 2  | 5  | 3  | 0  | 4  | 7  | 1  | 4  | 6  |
 
@@ -19,7 +19,7 @@ equivalent 'BSN - Burger Service Nummer'.
 
 #### Application information
 
-Name: elevenproof-api
+Name: eleven-proof-lib
 Maintainer: Sayf jawad ([sayf@multicode.nl](mailto:sayf@multicode.nl))
 
 #### Requirements
@@ -103,36 +103,50 @@ $ mvn clean install -Pintegration-test
 
 #### Application usage
 
-Generate BSN or BankAccount:
-buid the application 
-``` 
+The application can be used both as a REST API and as a Command Line Interface (CLI).
 
+##### Command Line Interface (CLI) usage
+
+Build the application with dependencies:
+```
 $ mvn clean install
-
 ```
-run the application 
+Run the CLI:
+```
+$ java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar help
 ```
 
+Generate a number:
+```
+$ java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar generate bsn
+$ java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar generate bank
+```
+
+Validate a number:
+```
+$ java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar validate bsn 123456782
+$ java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar validate bank 123456789
+$ java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar validate giro 1234567
+```
+
+##### REST API usage
+
+Run the application:
+```
 $ java -jar application/target/application-1.0-SNAPSHOT.jar
-
 ```
-test by browser
+Test by browser:
 ```
-
 http://localhost:8080/api/swagger-ui/index.html
-
 ```
-test by command line
+Test by command line:
 ```
-
 # BSN
-
 $ curl -X 'GET' 'http://localhost:8080/api/bsn/generate' -H 'accept: */*'
 $ curl -X 'GET' 'http://localhost:8080/api/bsn/validate/052863785' -H 'accept: */*'
 
-#BANK
+# BANK
 $ curl -X 'GET' 'http://localhost:8080/api/bank/generate' -H 'accept: */*'
 $ curl -X 'GET' 'http://localhost:8080/api/bank/validate/0810660385' -H 'accept: */*'
-
 ```
 

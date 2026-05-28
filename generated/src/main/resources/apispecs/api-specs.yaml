@@ -1,19 +1,24 @@
 openapi: 3.0.1
 info:
-  title: OpenAPI definition
-  version: v0
+  title: ElevenProof API
+  description: >
+    OpenSource API voor het valideren en genereren van nummers die voldoen aan de Nederlandse elfproef (modulo-11).
+    Dit omvat Burgerservicenummers (BSN), klassieke bankrekeningnummers en Giro-rekeningnummers.
+  version: v1
 servers:
   - url: https://elevenproof.multicode.nl
-    description: Primary server URL
+    description: Primaire server URL
   - url: http://elevenproof.multicode.nl
     description: Fallback server URL
   - url: http://localhost:8080
-    description: Localhost server url
+    description: Localhost server URL
 paths:
   /appinfo/health/liveness:
     get:
       tags:
         - health-controller
+      summary: Health check endpoint
+      description: Controleert of de applicatie actief is.
       operationId: getHealth
       responses:
         '200':
@@ -25,63 +30,104 @@ paths:
   /api/bsn/validate/{number}:
     get:
       tags:
-        - burger-service-number-controller
+        - citizen-service-number-controller
+      summary: Valideer een Burgerservicenummer (BSN)
+      description: >
+        Controleert of een 9-cijferig BSN voldoet aan de elfproef.
+        De elfproef voor BSN gebruikt de multipliers: 9, 8, 7, 6, 5, 4, 3, 2, -1.
       operationId: validate
       parameters:
         - name: number
           in: path
           required: true
+          description: Het te valideren BSN (9 cijfers).
           schema:
             type: string
+            pattern: '^[0-9]{9}$'
       responses:
         '200':
-          description: OK
+          description: Validatieresultaat
           content:
             '*/*':
               schema:
-                type: string
+                $ref: '#/components/schemas/CitizenServiceNumber'
   /api/bsn/generate:
     get:
       tags:
-        - burger-service-number-controller
+        - citizen-service-number-controller
+      summary: Genereer een geldig BSN
+      description: Genereert een willekeurig 9-cijferig nummer dat voldoet aan de BSN-elfproef.
       operationId: generate
       responses:
         '200':
-          description: OK
+          description: Een nieuw gegenereerd BSN
           content:
             '*/*':
               schema:
-                type: string
+                $ref: '#/components/schemas/CitizenServiceNumber'
   /api/bank/validate/{number}:
     get:
       tags:
         - bank-number-controller
+      summary: Valideer een Nederlands bankrekeningnummer
+      description: >
+        Valideert klassieke (pre-IBAN) Nederlandse bankrekeningnummers van 9 of 10 cijfers.
+        Dit formaat werd gebruikt door banken zoals Rabobank, ABN AMRO, SNS Bank, ASN Bank, Triodos en Van Lanschot.
+        Beperking: Ondersteunt geen Giro-nummers (zie /api/giro).
       operationId: validate_1
       parameters:
         - name: number
           in: path
           required: true
+          description: Het bankrekeningnummer (9 of 10 cijfers).
           schema:
             type: string
+            pattern: '^[0-9]{9,10}$'
       responses:
         '200':
-          description: OK
+          description: Validatieresultaat
           content:
             '*/*':
               schema:
-                type: string
+                $ref: '#/components/schemas/BankAccountNumber'
   /api/bank/generate:
     get:
       tags:
         - bank-number-controller
+      summary: Genereer een geldig bankrekeningnummer
+      description: Genereert een willekeurig 10-cijferig bankrekeningnummer dat voldoet aan de elfproef.
       operationId: generate_1
       responses:
         '200':
-          description: OK
+          description: Een nieuw gegenereerd bankrekeningnummer
           content:
             '*/*':
               schema:
-                type: string
+                $ref: '#/components/schemas/BankAccountNumber'
+  /api/giro/validate/{number}:
+    get:
+      tags:
+        - giro-account-number-controller
+      summary: Valideer een Giro-rekeningnummer
+      description: >
+        Valideert historische Giro-rekeningnummers (voormalige Postbank).
+        Deze nummers hebben een lengte van 1 tot 7 cijfers en gebruiken GEEN elfproef.
+      operationId: validate_2
+      parameters:
+        - name: number
+          in: path
+          required: true
+          description: Het Giro-nummer (1 tot 7 cijfers).
+          schema:
+            type: string
+            pattern: '^[0-9]{1,7}$'
+      responses:
+        '200':
+          description: Validatieresultaat
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GiroAccountNumber'
 components:
   schemas:
     Health:
@@ -95,20 +141,37 @@ components:
           type: object
           additionalProperties:
             type: object
-    BurgerServiceNumber:
+    CitizenServiceNumber:
       type: object
+      description: Model voor Burgerservicenummer (BSN) validatie en generatie.
       properties:
         number:
           type: string
+          description: Het 9-cijferige nummer.
           pattern: '^[0-9]{9}$'
         isElevenproof:
           type: boolean
+          description: Geeft aan of het nummer voldoet aan de BSN-elfproef.
     BankAccountNumber:
       type: object
+      description: Model voor bankrekeningnummer validatie en generatie.
       properties:
         number:
           type: string
-          pattern: '^[0-9]{10}$'
+          description: Het 9- of 10-cijferige nummer.
+          pattern: '^[0-9]{9,10}$'
         isElevenproof:
           type: boolean
+          description: Geeft aan of het nummer voldoet aan de standaard bank-elfproef.
+    GiroAccountNumber:
+      type: object
+      description: Model voor Giro-rekeningnummer validatie.
+      properties:
+        number:
+          type: string
+          description: Het 1- tot 7-cijferige nummer.
+          pattern: '^[0-9]{1,7}$'
+        isValid:
+          type: boolean
+          description: Geeft aan of het nummer een geldig Giro-formaat heeft.
 

@@ -1,6 +1,6 @@
 package nl.multicode.elevenproof.model;
 
-public interface ElevenproofNumebr {
+public interface ElevenproofNumber {
 
     String number();
 }

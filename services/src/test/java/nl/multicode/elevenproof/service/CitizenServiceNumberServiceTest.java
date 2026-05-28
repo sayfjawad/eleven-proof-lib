@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import nl.multicode.elevenproof.generate.BurgerServiceNummerGenerator;
+import nl.multicode.elevenproof.generate.CitizenServiceNumberGenerator;
 import nl.multicode.elevenproof.map.StringToIntArray;
-import nl.multicode.elevenproof.validate.BurgerServiceNumberProof;
+import nl.multicode.elevenproof.validate.CitizenServiceNumberElevenProof;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,20 +14,20 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class BurgerServiceNumberServiceTest {
+class CitizenServiceNumberServiceTest {
 
 
     @Mock
-    private BurgerServiceNummerGenerator generator;
+    private CitizenServiceNumberGenerator generator;
 
     @Mock
-    private BurgerServiceNumberProof elevenProof;
+    private CitizenServiceNumberElevenProof elevenProof;
 
     @Mock
     private StringToIntArray stringToIntArray;
 
     @InjectMocks
-    private BurgerServiceNumberService service;
+    private CitizenServiceNumberService service;
 
     @Test
     void generate() {

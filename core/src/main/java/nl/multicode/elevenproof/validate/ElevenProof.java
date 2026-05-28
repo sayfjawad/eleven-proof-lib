@@ -5,7 +5,7 @@ import java.util.stream.IntStream;
 
 public interface ElevenProof extends Predicate<int[]> {
 
-    boolean test(int[] nummer);
+    boolean test(int[] number);
 
     default boolean test(int[] number, int[] digitPositionMultipliers) {
 

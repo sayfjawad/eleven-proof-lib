@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class BurgerServiceNummerGeneratorTest {
+class CitizenServiceNumberGeneratorTest {
 
     @Mock
     private ObjectSupplier<int[]> randomDigitsSupplier;
@@ -27,11 +27,11 @@ class BurgerServiceNummerGeneratorTest {
     private ElevenProof numberElevenProof;
 
     @InjectMocks
-    private BurgerServiceNummerGenerator generator;
+    private CitizenServiceNumberGenerator generator;
 
     @Test
     @DisplayName("Given the generator is implemented correctly"
-            + "When the generate() method is called withe the correct ProofType"
+            + "When the generate() method is called with the correct ProofType"
             + "Then a valid eleven-proof BSN number is generated and returned")
     void generate() {
 

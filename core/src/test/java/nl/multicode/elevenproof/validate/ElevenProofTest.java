@@ -13,7 +13,7 @@ class ElevenProofTest {
     @BeforeEach
     public void before() {
 
-        elevenProof = nummer -> false;
+        elevenProof = number -> false;
     }
 
     @Test
