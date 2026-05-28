@@ -12,7 +12,9 @@ public class GiroAccountNumberService implements ElevenProofService<Void> {
 
     @Override
     public Void generate() {
-        throw new UnsupportedOperationException("Giro account numbers cannot be generated as any 1-7 digit number is technically valid.");
+        throw new UnsupportedOperationException(
+            "Giro account numbers cannot be generated as any 1-7 digit number is technically valid."
+        );
     }
 
     @Override

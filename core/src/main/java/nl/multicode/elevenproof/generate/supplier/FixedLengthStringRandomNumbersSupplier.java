@@ -6,7 +6,7 @@ import nl.multicode.elevenproof.generate.supplier.exception.NegativeIntegerNotSu
 public class FixedLengthStringRandomNumbersSupplier implements ObjectSupplier<int[]> {
 
     public static final int SINGLE_DIGIT_MAX_RANDOM_NUMBER = 9;
-    private static final Random random = new Random();
+    private static final Random RANDOM = new Random();
     private final int digitsLength;
 
     public FixedLengthStringRandomNumbersSupplier(int digitsLength) {
@@ -22,7 +22,7 @@ public class FixedLengthStringRandomNumbersSupplier implements ObjectSupplier<in
 
         final var randomDigitsArray = new int[digitsLength];
         for (int index = 0; index < digitsLength; index++) {
-            randomDigitsArray[index] = random.nextInt(SINGLE_DIGIT_MAX_RANDOM_NUMBER);
+            randomDigitsArray[index] = RANDOM.nextInt(SINGLE_DIGIT_MAX_RANDOM_NUMBER);
         }
         return randomDigitsArray;
     }
