@@ -6,7 +6,7 @@
 
   <groupId>nl.multicode.elevenproof</groupId>
   <artifactId>eleven-proof-lib</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <name>eleven-proof-lib</name>
   <description>Java library to generate and validate Dutch bank account numbers and citizen service numbers using the eleven proof.</description>
   <url>https://github.com/multicode/eleven-proof-lib</url>

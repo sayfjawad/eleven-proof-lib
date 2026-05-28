@@ -6,12 +6,12 @@
   <parent>
     <artifactId>eleven-proof-lib</artifactId>
     <groupId>nl.multicode.elevenproof</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
   </parent>
 
   <artifactId>generated</artifactId>
   <name>generated</name>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
 
   <build>
     <plugins>
