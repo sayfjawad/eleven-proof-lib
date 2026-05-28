@@ -14,13 +14,20 @@ package nl.multicode.elevenproof.validate;
  *   <li>For 9-digit numbers: Multipliers are {9, 8, 7, 6, 5, 4, 3, 2, 1}.</li>
  *   <li>The sum of the digits multiplied by their respective weights must be divisible by 11.</li>
  * </ul>
- * </p>
  */
 public class BankAccountNumberElevenProof implements ElevenProof {
 
     private static final int[] MULTIPLIERS_10_DIGITS = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
     private static final int[] MULTIPLIERS_9_DIGITS = {9, 8, 7, 6, 5, 4, 3, 2, 1};
 
+    /**
+     * Tests whether the supplied digits form a valid 9- or 10-digit Dutch bank account number
+     * according to the eleven-proof rule.
+     *
+     * @param accountNr the bank account digits to test
+     * @return {@code true} if the digits pass the eleven-proof for the matching length,
+     *         {@code false} for {@code null} input or unsupported lengths
+     */
     @Override
     public boolean test(int[] accountNr) {
 

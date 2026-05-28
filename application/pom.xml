@@ -5,39 +5,35 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>application</artifactId>
-  <name>application</name>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
+  <name>eleven-proof-lib :: application</name>
+  <description>
+    Command-line entry point and dependency-wiring configuration for the eleven-proof library.
+    Bundles the core, services, and generated modules into a runnable JAR exposing the
+    eleven-proof generate and validate operations through a CLI.
+    Source code, issues, and contributions: https://github.com/sayfjawad/eleven-proof-lib
+  </description>
 
   <parent>
     <artifactId>eleven-proof-lib</artifactId>
     <groupId>nl.multicode.elevenproof</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
   </parent>
   <dependencies>
     <dependency>
       <groupId>nl.multicode.elevenproof</groupId>
       <artifactId>core</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>1.0</version>
     </dependency>
     <dependency>
       <groupId>nl.multicode.elevenproof</groupId>
       <artifactId>services</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>1.0</version>
     </dependency>
     <dependency>
       <groupId>nl.multicode.elevenproof</groupId>
       <artifactId>generated</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>io.rest-assured</groupId>
-      <artifactId>rest-assured-all</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.rest-assured</groupId>
-      <artifactId>rest-assured</artifactId>
-      <scope>test</scope>
+      <version>1.0</version>
     </dependency>
     <dependency>
       <artifactId>jacoco-maven-plugin</artifactId>

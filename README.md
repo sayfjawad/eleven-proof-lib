@@ -28,125 +28,132 @@ This project uses:
 
 ```
 Java 21
-Spring Boot 3.x
-Gradle
-docker
-kubernetes (k8s) # P.S. docker-desktop has a kubernetes implementation you can use
-helm
-kubectl
+Maven
 ```
 
 #### Build Application
 
 ```
-./mvn clean install
-```
-
-#### Use dockerhub.com
-
-Create environment variables containing login/password to be able to register your container
-images to dockerhub.com
-
-``` 
-DOCKER_HUB_USER={your dockerhub username}
-DOCKER_HUB_PASS={your dockerhub password}
-``` 
-
-#### Use sonarqube
-Create environment variables containing url/login/password to be able to connect your project to a
-SonarQube/SonarCloud instance. 
-``` 
-SONAR_URL=http://sonar.host.com
-SONAR_LOGIN=login
-SONAR_PASSWORD=password
-``` 
-
-
-After building the project run:
-```
-$ mvn verify sonar:sonar
-```
-
-
-#### Integration testing using kubernetes
-Running automated tests to ensure functional expectations are met and prevent regression
-
-## requisites
-Install Docker-Desktop and enable kuberenetes support in settings
-
-## run the integration tests
-Make sure docker-desktop is running, build the necessary docker image using 'jib'
-``` 
-$ cd application
-$ ./mvn jib
-```
-go to the integration-test folder
-```
-
-$ cd integration-test
-
-```
-run the integration test.sh script with install parameter then again with port parameter
-```
-
-$ cd integration-test
-$ ./test.sh install
-$ ./test.sh port
-
-```
-your kuberenetes pod should be running. 
-Now you can run cucumber tests!
-
-``` 
-$ mvn clean install -Pintegration-test
+mvn clean install
 ```
 
 #### Application usage
 
-The application can be used both as a REST API and as a Command Line Interface (CLI).
+The application can be used as a Java library or as a Command Line Interface (CLI).
+
+##### Library usage (Java API)
+
+Add the `services` module to your `pom.xml` (it pulls in `core` transitively):
+
+```xml
+<dependency>
+    <groupId>nl.multicode.elevenproof</groupId>
+    <artifactId>services</artifactId>
+    <version>1.0</version>
+</dependency>
+```
+
+or, for Gradle:
+
+```groovy
+implementation 'nl.multicode.elevenproof:services:1.0'
+```
+
+Example — validate and generate a citizen service number (BSN):
+
+```java
+import nl.multicode.elevenproof.generate.CitizenServiceNumberGenerator;
+import nl.multicode.elevenproof.generate.supplier.FixedLengthStringRandomNumbersSupplier;
+import nl.multicode.elevenproof.map.IntArrayToString;
+import nl.multicode.elevenproof.map.StringToIntArray;
+import nl.multicode.elevenproof.model.CitizenServiceNumberDto;
+import nl.multicode.elevenproof.service.CitizenServiceNumberService;
+import nl.multicode.elevenproof.validate.CitizenServiceNumberElevenProof;
+
+public class BsnExample {
+
+    public static void main(String[] args) {
+
+        var elevenProof = new CitizenServiceNumberElevenProof();
+        var generator = new CitizenServiceNumberGenerator(
+                new FixedLengthStringRandomNumbersSupplier(
+                        CitizenServiceNumberGenerator.BSN_DIGITS_LENGTH),
+                new IntArrayToString(),
+                elevenProof);
+        var service = new CitizenServiceNumberService(
+                generator, elevenProof, new StringToIntArray());
+
+        // Validate an existing BSN
+        boolean valid = service.isValid("123456782");
+        System.out.println("123456782 is valid? " + valid);
+
+        // Generate a new valid BSN
+        CitizenServiceNumberDto generated = service.generate();
+        System.out.println("Generated BSN: " + generated.number());
+    }
+}
+```
+
+For a one-liner validation without the full service wiring you can use the validator directly:
+
+```java
+var valid = new CitizenServiceNumberElevenProof()
+        .test(new StringToIntArray().apply("123456782"));
+```
 
 ##### Command Line Interface (CLI) usage
 
-Build the application with dependencies:
+Build the application:
 ```
-$ mvn clean install
+mvn clean install
 ```
+
 Run the CLI:
 ```
-$ java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar help
+java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar help
 ```
 
 Generate a number:
 ```
-$ java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar generate bsn
-$ java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar generate bank
+java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar generate bsn
+java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar generate bank
 ```
 
 Validate a number:
 ```
-$ java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar validate bsn 123456782
-$ java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar validate bank 123456789
-$ java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar validate giro 1234567
+java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar validate bsn 123456782
+java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar validate bank 123456789
+java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar validate giro 1234567
 ```
 
-##### REST API usage
+#### Running Tests
 
-Run the application:
+To run the unit and integration tests:
 ```
-$ java -jar application/target/application-1.0-SNAPSHOT.jar
+mvn clean verify
 ```
-Test by browser:
-```
-http://localhost:8080/api/swagger-ui/index.html
-```
-Test by command line:
-```
-# BSN
-$ curl -X 'GET' 'http://localhost:8080/api/bsn/generate' -H 'accept: */*'
-$ curl -X 'GET' 'http://localhost:8080/api/bsn/validate/052863785' -H 'accept: */*'
 
-# BANK
-$ curl -X 'GET' 'http://localhost:8080/api/bank/generate' -H 'accept: */*'
-$ curl -X 'GET' 'http://localhost:8080/api/bank/validate/0810660385' -H 'accept: */*'
-```
+#### Releasing a new version to Maven Central
+
+Releases can **only** be cut from `main`. The procedure is:
+
+1. Merge all changes intended for the release into `main` (via a pull request).
+2. From a clean local `main`, create and push a semver tag prefixed with `v`:
+
+   ```bash
+   git checkout main && git pull
+   git tag v1.1.0
+   git push origin v1.1.0
+   ```
+
+3. The `Release to Maven Central` GitHub Actions workflow fires on the tag,
+   sets the project version to the tag name (without the `v`), signs the
+   artifacts with the project's GPG key, and publishes all modules to
+   Maven Central via the `central-publishing-maven-plugin`.
+
+The workflow refuses to publish when the tagged commit is not reachable from
+`origin/main`, so releases from feature branches are blocked.
+
+Required GitHub Secrets (already configured for this repository):
+`CENTRAL_USERNAME`, `CENTRAL_PASSWORD`, `GPG_PRIVATE_KEY`, `GPG_PASSPHRASE`.
 

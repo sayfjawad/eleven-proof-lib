@@ -6,13 +6,20 @@
   <parent>
     <artifactId>eleven-proof-lib</artifactId>
     <groupId>nl.multicode.elevenproof</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
-  <name>core</name>
   <artifactId>core</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
+  <name>eleven-proof-lib :: core</name>
+  <description>
+    Public interfaces, value objects (DTOs, records), and shared utilities for working with
+    numbers that satisfy the Dutch eleven-proof rule. Defines the contracts implemented by the
+    other modules - generators, validators, services, and controllers - but contains no
+    domain-specific generation or validation logic of its own.
+    Source code, issues, and contributions: https://github.com/sayfjawad/eleven-proof-lib
+  </description>
 
   <dependencies>
     <dependency>
