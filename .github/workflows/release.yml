@@ -13,6 +13,16 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify tag is on main
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor "${GITHUB_SHA}" origin/main; then
+            echo "::error::Tag ${GITHUB_REF_NAME} does not point to a commit on main. Refusing to release."
+            exit 1
+          fi
 
       - name: Set up JDK 21 and Maven settings
         uses: actions/setup-java@v4

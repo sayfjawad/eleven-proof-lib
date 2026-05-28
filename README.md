@@ -133,3 +133,27 @@ To run the unit and integration tests:
 mvn clean verify
 ```
 
+#### Releasing a new version to Maven Central
+
+Releases can **only** be cut from `main`. The procedure is:
+
+1. Merge all changes intended for the release into `main` (via a pull request).
+2. From a clean local `main`, create and push a semver tag prefixed with `v`:
+
+   ```bash
+   git checkout main && git pull
+   git tag v1.1.0
+   git push origin v1.1.0
+   ```
+
+3. The `Release to Maven Central` GitHub Actions workflow fires on the tag,
+   sets the project version to the tag name (without the `v`), signs the
+   artifacts with the project's GPG key, and publishes all modules to
+   Maven Central via the `central-publishing-maven-plugin`.
+
+The workflow refuses to publish when the tagged commit is not reachable from
+`origin/main`, so releases from feature branches are blocked.
+
+Required GitHub Secrets (already configured for this repository):
+`CENTRAL_USERNAME`, `CENTRAL_PASSWORD`, `GPG_PRIVATE_KEY`, `GPG_PASSPHRASE`.
+

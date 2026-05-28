@@ -132,3 +132,27 @@ Om de unit- en integratietests uit te voeren:
 ```
 mvn clean verify
 ```
+
+#### Een nieuwe versie uitbrengen op Maven Central
+
+Releases kunnen **alleen** vanaf `main` worden gemaakt. De procedure is:
+
+1. Merge alle wijzigingen voor de release naar `main` (via een pull request).
+2. Maak en push vanaf een schone lokale `main` een semver-tag met prefix `v`:
+
+   ```bash
+   git checkout main && git pull
+   git tag v1.1.0
+   git push origin v1.1.0
+   ```
+
+3. De `Release to Maven Central` GitHub Actions-workflow start op de tag,
+   zet de projectversie op de tag-naam (zonder de `v`), ondertekent de
+   artifacts met de GPG-sleutel van het project en publiceert alle modules
+   naar Maven Central via de `central-publishing-maven-plugin`.
+
+De workflow weigert te publiceren als de getagde commit niet bereikbaar is
+vanuit `origin/main`, dus releases vanaf feature branches worden geblokkeerd.
+
+Vereiste GitHub Secrets (al geconfigureerd voor deze repository):
+`CENTRAL_USERNAME`, `CENTRAL_PASSWORD`, `GPG_PRIVATE_KEY`, `GPG_PASSPHRASE`.
