@@ -28,125 +28,48 @@ This project uses:
 
 ```
 Java 21
-Spring Boot 3.x
-Gradle
-docker
-kubernetes (k8s) # P.S. docker-desktop has a kubernetes implementation you can use
-helm
-kubectl
+Maven
 ```
 
 #### Build Application
 
 ```
-./mvn clean install
-```
-
-#### Use dockerhub.com
-
-Create environment variables containing login/password to be able to register your container
-images to dockerhub.com
-
-``` 
-DOCKER_HUB_USER={your dockerhub username}
-DOCKER_HUB_PASS={your dockerhub password}
-``` 
-
-#### Use sonarqube
-Create environment variables containing url/login/password to be able to connect your project to a
-SonarQube/SonarCloud instance. 
-``` 
-SONAR_URL=http://sonar.host.com
-SONAR_LOGIN=login
-SONAR_PASSWORD=password
-``` 
-
-
-After building the project run:
-```
-$ mvn verify sonar:sonar
-```
-
-
-#### Integration testing using kubernetes
-Running automated tests to ensure functional expectations are met and prevent regression
-
-## requisites
-Install Docker-Desktop and enable kuberenetes support in settings
-
-## run the integration tests
-Make sure docker-desktop is running, build the necessary docker image using 'jib'
-``` 
-$ cd application
-$ ./mvn jib
-```
-go to the integration-test folder
-```
-
-$ cd integration-test
-
-```
-run the integration test.sh script with install parameter then again with port parameter
-```
-
-$ cd integration-test
-$ ./test.sh install
-$ ./test.sh port
-
-```
-your kuberenetes pod should be running. 
-Now you can run cucumber tests!
-
-``` 
-$ mvn clean install -Pintegration-test
+mvn clean install
 ```
 
 #### Application usage
 
-The application can be used both as a REST API and as a Command Line Interface (CLI).
+The application can be used as a Java library or as a Command Line Interface (CLI).
 
 ##### Command Line Interface (CLI) usage
 
-Build the application with dependencies:
+Build the application:
 ```
-$ mvn clean install
+mvn clean install
 ```
+
 Run the CLI:
 ```
-$ java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar help
+java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar help
 ```
 
 Generate a number:
 ```
-$ java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar generate bsn
-$ java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar generate bank
+java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar generate bsn
+java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar generate bank
 ```
 
 Validate a number:
 ```
-$ java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar validate bsn 123456782
-$ java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar validate bank 123456789
-$ java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar validate giro 1234567
+java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar validate bsn 123456782
+java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar validate bank 123456789
+java -jar application/target/application-1.0-SNAPSHOT-jar-with-dependencies.jar validate giro 1234567
 ```
 
-##### REST API usage
+#### Running Tests
 
-Run the application:
+To run the unit and integration tests:
 ```
-$ java -jar application/target/application-1.0-SNAPSHOT.jar
-```
-Test by browser:
-```
-http://localhost:8080/api/swagger-ui/index.html
-```
-Test by command line:
-```
-# BSN
-$ curl -X 'GET' 'http://localhost:8080/api/bsn/generate' -H 'accept: */*'
-$ curl -X 'GET' 'http://localhost:8080/api/bsn/validate/052863785' -H 'accept: */*'
-
-# BANK
-$ curl -X 'GET' 'http://localhost:8080/api/bank/generate' -H 'accept: */*'
-$ curl -X 'GET' 'http://localhost:8080/api/bank/validate/0810660385' -H 'accept: */*'
+mvn clean verify
 ```
 
