@@ -35,9 +35,33 @@
 
   <profiles>
     <profile>
+      <id>ossrh-snapshot</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <configuration>
+              <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>release</id>
       <build>
         <plugins>
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <configuration>
+              <skipNexusStagingDeployMojo>false</skipNexusStagingDeployMojo>
+            </configuration>
+          </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
