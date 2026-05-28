@@ -19,6 +19,14 @@ public class CitizenServiceNumberElevenProof implements ElevenProof {
 
     private static final int[] BSN_ONDNR_MULTIPLIERS = {9, 8, 7, 6, 5, 4, 3, 2, -1};
 
+    /**
+     * Tests whether the supplied digits form a valid 9-digit Dutch BSN according to the
+     * eleven-proof rule with the BSN-specific multiplier table.
+     *
+     * @param bsn the BSN digits to test
+     * @return {@code true} if the digits pass the BSN eleven-proof, {@code false} for
+     *         {@code null} input or an incorrect length
+     */
     @Override
     public boolean test(int[] bsn) {
 

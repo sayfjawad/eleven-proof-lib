@@ -5,8 +5,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>application</artifactId>
-  <name>application</name>
   <version>1.0</version>
+  <name>eleven-proof-lib :: application</name>
+  <description>
+    Command-line entry point and dependency-wiring configuration for the eleven-proof library.
+    Bundles the core, services, and generated modules into a runnable JAR exposing the
+    eleven-proof generate and validate operations through a CLI.
+    Source code, issues, and contributions: https://github.com/sayfjawad/eleven-proof-lib
+  </description>
 
   <parent>
     <artifactId>eleven-proof-lib</artifactId>

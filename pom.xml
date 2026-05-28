@@ -7,9 +7,15 @@
   <groupId>nl.multicode.elevenproof</groupId>
   <artifactId>eleven-proof-lib</artifactId>
   <version>1.0</version>
-  <name>eleven-proof-lib</name>
-  <description>Java library to generate and validate Dutch bank account numbers and citizen service numbers using the eleven proof.</description>
-  <url>https://github.com/multicode/eleven-proof-lib</url>
+  <name>eleven-proof-lib :: parent</name>
+  <description>
+    Aggregator parent POM for the eleven-proof library. Coordinates four modules - core (API
+    contracts), services (generators and validators), generated (OpenAPI models), and
+    application (CLI) - that together generate and validate Dutch identifiers (BSN, bank
+    account, Giro) using the eleven-proof rule.
+    Source code, issues, and contributions: https://github.com/sayfjawad/eleven-proof-lib
+  </description>
+  <url>https://github.com/sayfjawad/eleven-proof-lib</url>
 
   <licenses>
     <license>
@@ -29,19 +35,19 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git://github.com/multicode/eleven-proof-lib.git</connection>
-    <developerConnection>scm:git:ssh://github.com:multicode/eleven-proof-lib.git</developerConnection>
-    <url>https://github.com/multicode/eleven-proof-lib/tree/main</url>
+    <connection>scm:git:git://github.com/sayfjawad/eleven-proof-lib.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/sayfjawad/eleven-proof-lib.git</developerConnection>
+    <url>https://github.com/sayfjawad/eleven-proof-lib/tree/main</url>
   </scm>
 
   <issueManagement>
     <system>GitHub Issues</system>
-    <url>https://github.com/multicode/eleven-proof-lib/issues</url>
+    <url>https://github.com/sayfjawad/eleven-proof-lib/issues</url>
   </issueManagement>
 
   <ciManagement>
     <system>GitHub Actions</system>
-    <url>https://github.com/multicode/eleven-proof-lib/actions</url>
+    <url>https://github.com/sayfjawad/eleven-proof-lib/actions</url>
   </ciManagement>
 
   <profiles>

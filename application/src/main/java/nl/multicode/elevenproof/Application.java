@@ -4,8 +4,19 @@ import java.util.Arrays;
 import java.util.List;
 import nl.multicode.elevenproof.config.AppConfig;
 
+/**
+ * Command-line entry point for the eleven-proof tool. Parses the first argument as a command
+ * ({@code generate}, {@code validate}, {@code help}) and dispatches to the matching controller
+ * via {@link AppConfig}.
+ */
 public class Application {
 
+  /**
+   * Application entry point.
+   *
+   * @param args command followed by command-specific arguments; pass {@code help} or no
+   *             arguments to print usage
+   */
   public static void main(String[] args) {
     if (args.length == 0 || isHelpRequested(args)) {
       printHelp();

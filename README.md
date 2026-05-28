@@ -41,6 +41,66 @@ mvn clean install
 
 The application can be used as a Java library or as a Command Line Interface (CLI).
 
+##### Library usage (Java API)
+
+Add the `services` module to your `pom.xml` (it pulls in `core` transitively):
+
+```xml
+<dependency>
+    <groupId>nl.multicode.elevenproof</groupId>
+    <artifactId>services</artifactId>
+    <version>1.0</version>
+</dependency>
+```
+
+or, for Gradle:
+
+```groovy
+implementation 'nl.multicode.elevenproof:services:1.0'
+```
+
+Example — validate and generate a citizen service number (BSN):
+
+```java
+import nl.multicode.elevenproof.generate.CitizenServiceNumberGenerator;
+import nl.multicode.elevenproof.generate.supplier.FixedLengthStringRandomNumbersSupplier;
+import nl.multicode.elevenproof.map.IntArrayToString;
+import nl.multicode.elevenproof.map.StringToIntArray;
+import nl.multicode.elevenproof.model.CitizenServiceNumberDto;
+import nl.multicode.elevenproof.service.CitizenServiceNumberService;
+import nl.multicode.elevenproof.validate.CitizenServiceNumberElevenProof;
+
+public class BsnExample {
+
+    public static void main(String[] args) {
+
+        var elevenProof = new CitizenServiceNumberElevenProof();
+        var generator = new CitizenServiceNumberGenerator(
+                new FixedLengthStringRandomNumbersSupplier(
+                        CitizenServiceNumberGenerator.BSN_DIGITS_LENGTH),
+                new IntArrayToString(),
+                elevenProof);
+        var service = new CitizenServiceNumberService(
+                generator, elevenProof, new StringToIntArray());
+
+        // Validate an existing BSN
+        boolean valid = service.isValid("123456782");
+        System.out.println("123456782 is valid? " + valid);
+
+        // Generate a new valid BSN
+        CitizenServiceNumberDto generated = service.generate();
+        System.out.println("Generated BSN: " + generated.number());
+    }
+}
+```
+
+For a one-liner validation without the full service wiring you can use the validator directly:
+
+```java
+var valid = new CitizenServiceNumberElevenProof()
+        .test(new StringToIntArray().apply("123456782"));
+```
+
 ##### Command Line Interface (CLI) usage
 
 Build the application:

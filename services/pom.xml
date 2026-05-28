@@ -11,8 +11,14 @@
   </parent>
 
   <artifactId>services</artifactId>
-  <name>services</name>
   <version>1.0</version>
+  <name>eleven-proof-lib :: services</name>
+  <description>
+    Concrete eleven-proof generators, validators, and service facades for the three supported
+    Dutch identifier types: bank account numbers, citizen service numbers (BSN), and
+    Giro/Postbank account numbers. Depends on the core module for shared contracts.
+    Source code, issues, and contributions: https://github.com/sayfjawad/eleven-proof-lib
+  </description>
 
   <dependencies>
     <dependency>

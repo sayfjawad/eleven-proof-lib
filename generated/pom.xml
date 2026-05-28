@@ -10,8 +10,14 @@
   </parent>
 
   <artifactId>generated</artifactId>
-  <name>generated</name>
   <version>1.0</version>
+  <name>eleven-proof-lib :: generated</name>
+  <description>
+    OpenAPI-generated data transfer objects used at the application boundary of the eleven-proof
+    library. Models are regenerated from the OpenAPI specification under
+    src/main/resources/apispecs and exposed through the application controllers.
+    Source code, issues, and contributions: https://github.com/sayfjawad/eleven-proof-lib
+  </description>
 
   <build>
     <plugins>
